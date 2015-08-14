@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Noto+Sans">
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-    <script src="data.js"></script>
     <script src="main.js"></script>
 
 </head>
@@ -22,6 +21,7 @@
         	<form id="singerform">
                 <ul></ul>
             </form>
+            <img id="warn" class="none" src="imgs/warn.png">
         </div>
 
         <div id="factors">
@@ -59,13 +59,13 @@
                 <div><input type="text" id="addFirstChord" class="formtext"></input><label for="addFirstChord">First Chord</label></div><br>
                 <div><select id="addSoloist" class="formselect"><option value="" selected></option></select><label for="addSoloist">Soloist</label></div>
                 <div><select id="addUnderstudy" class="formselect"><option value="" selected></option></select><label for="addUnderstudy">Understudy</label></div>
-                <input type="checkbox" id="addInappropriate">Contains explicit content</input><br>
+                <div class="checkbox"></div><input type="checkbox" id="addInappropriate">Contains explicit content</input><br>
                 <div><select id="addDuetist" class="formselect"><option value="" selected></option></select><label for="addDuetist">2nd Soloist</label></div>
                 <div><select id="addDuetUnderstudy" class="formselect"><option value="" selected></option></select><label for="addDuetUnderstudy">2nd Soloist Understudy</label></div>
-                <input type="checkbox" id="addGroup">Group song</input><br>
+                <div class="checkbox"></div><input type="checkbox" id="addGroup">Group song</input><br>
                 <div><select id="addBeatboxer"class="formselect"><option value="" selected></option></select><label for="addBeatboxer">Beatbox</label></div>
                 <div><select id="addBeatboxUnderstudy" class="formselect"><option value="" selected></option></select><label for="addBeatboxUnderstudy">Backup Beatbox</label></div>
-                <input type="checkbox" id="addXmas">This is a Christmas song</input><br>
+                <div class="checkbox"></div><input type="checkbox" id="addXmas">This is a Christmas song</input><br>
                 <input type="button" id="addSongBtn" class="btn" value="Add song"></input>
             </form>
         </div>
@@ -80,13 +80,13 @@
                 <div><input type="text" id="editFirstChord" class="formtext"></input><label for="editFirstChord">First Chord</label></div><br>
                 <div><select id="editSoloist" class="formselect"><option value="" selected></option></select><label for="editSoloist">Soloist</label></div>
                 <div><select id="editUnderstudy" class="formselect"><option value="" selected></option></select><label for="editUnderstudy">Understudy</label></div>
-                <input type="checkbox" id="editInappropriate">Contains explicit content</input><br>
+                <div class="checkbox"></div><input type="checkbox" id="editInappropriate">Contains explicit content</input><br>
                 <div><select id="editDuetist" class="formselect"><option value="" selected></option></select><label for="editDuetist">2nd Soloist</label></div>
                 <div><select id="editDuetUnderstudy" class="formselect"><option value="" selected></option></select><label for="editDuetUnderstudy">2nd Soloist Understudy</label></div>
-                <input type="checkbox" id="editGroup">Group song</input><br>
+                <div class="checkbox"></div><input type="checkbox" id="editGroup">Group song</input><br>
                 <div><select id="editBeatboxer" class="formselect"><option value="" selected></option></select><label for="editBeatboxer">Beatbox</label></div>
                 <div><select id="editBeatboxUnderstudy" class="formselect"><option value="" selected></option></select><label for="editBeatboxUnderstudy">Backup Beatbox</label></div>
-                <input type="checkbox" id="editXmas">This is a Christmas song</input><br>
+                <div class="checkbox"></div><input type="checkbox" id="editXmas">This is a Christmas song</input><br>
                 <input type="button" id="editSongBtn" class="btn" value="Save Changes"></input>
                 <input type="button" id="deleteSongBtn" class="btn" value="Delete song"></input>
             </form>
@@ -131,9 +131,24 @@
     </div>
 
     <div id="help"></div>
-<!--     <div id="helpText">
-        Welcome to the CU Buffoons Setlist App.
-    </div> -->
+    <div id="helpText" class="none">
+        <h3>Welcome to the CU Buffoons Setlist App.</h3>
+        <p>Select which singers will be missing from the upcoming show, and see which songs you'll be able to sing based on soloist, beatboxer, etc.  Use the additional factors next to the singers to filter your search even further.</p>
+        <hr>
+        <ul>
+            <li><span class="pink">Pink tiles</span> indicate that the soloist will be missing, but the understudy will be available.</li>
+            <li><span class="blue">Blue tiles</span> indicate that both the beatboxer and backup beatboxer will be missing, so someone new will have to take over beatboxing.</li>
+            <li><strong>Click each tile</strong> to see that song's full information in the lower right corner of the page.</li>
+        </ul>
+        <hr>
+        <img src="imgs/warn.png">
+        <p>This warning signifies that you've got a whole vocal part missing, which ain't no good.</p>
+        <ul>
+            <li>Remember, if one guy is the only singer holding down his vocal part, he can only sing solos if somebody else in the group also knows that vocal part.</li>
+            <li>Generally speaking, shows where fewer than 6 or 7 singers are available should reeeeeally be avoided.  Our rep is on the line.</li>
+        </ul>
+        <p><strong>Have fun! ~ Spence, MD '15-'16</strong></p>
+    </div>
     
 </body>
 </html>

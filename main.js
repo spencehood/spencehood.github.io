@@ -4,7 +4,7 @@ $(document).ready( function() {
 
 //var songs = data.songs;
 var songs = [];
-var notmissing;
+var notmissing = [];
 var localApiData;
 var whichAction = 1;
 
@@ -84,7 +84,21 @@ var songFilterer = {
 			}
 		});
 
+		$('.form .checkbox').on('click', function() {
+			if ($(this).next().prop('checked') == false) {
+				$(this).next().prop('checked', true);
+				$(this).addClass('checked');
+			} else {
+				$(this).next().prop('checked', false);
+				$(this).removeClass('checked');
+			}
+		})
+
 		$('#factorform input:checkbox').on('change', $.proxy(this.songFilter, this));
+
+		$('#help').on('click', function() {
+			$('#helpText').toggleClass('none');
+		})
 
 		$('.launch').on('click', $.proxy(this.displayForm, this));
 
@@ -168,14 +182,10 @@ var songFilterer = {
 		// use event.current target to find id here
 		var inputId = e.target.id;
 		if ($('#' + inputId).val() == '') {
-			$('#' + inputId + ' + label').animate({top: '18px' }, { duration: 300 });
+			$('#' + inputId + ' + label').animate({top: '15px' }, { duration: 300 });
 		} else { }
 		$('#' + inputId + ' + label').css('color', '#59323C');
 
-	},
-
-	xmasShow: function() {
-		alert('xmas');
 	},
 
 	songFilter:function() {
@@ -327,8 +337,9 @@ var songFilterer = {
 
 		$('#singerform input:not(:checked)').each(function() {
 			value = $(this).val();
-			for (var i = 0; i < self.notmissing.length; i++) { // Go through all unchecked members (members that WILL be at the show)
-				thisSinger = self.notmissing[i];
+			// console.log(value);
+			for (var i = 0; i < self.localApiData.singers.length; i++) { // Go through all unchecked members (members that WILL be at the show)
+				thisSinger = self.localApiData.singers[i];
 				if (thisSinger.firstname + ' ' + thisSinger.lastname == value) { // Add to variables based on how many of each vocal part we have
 					if (thisSinger.vocalpart == 'Tenor I') { t1 += 1; }
 					else if (thisSinger.vocalpart == 'Tenor II') { t2 += 1; }
@@ -339,9 +350,20 @@ var songFilterer = {
 		});
 
 		console.log(t1, t2, br, bs);
-		if (!t1 || t2 == 0 || br == 0 || bs == 0) {
-			alert('Must have at least one singer from each vocal part');
-			$('.result').css('background', 'lightgrey');
+		$('#singerform input:not(:checked)').each(function() {
+			value = $(this).val();
+			var newSelf = this;
+			for (var i = 0; i < self.localApiData.singers.length; i++) { // Go through all unchecked members (members that WILL be at the show)
+				thisSinger = self.localApiData.singers[i];
+				if (t1 == 1 && value == thisSinger.firstname + ' ' + thisSinger.lastname && thisSinger.vocalpart == 'Tenor I') { console.log('last t1 left'); }
+				// else { $(newSelf).prev().css('background', 'none'); }
+			}
+		});
+
+		if (!t1 || !t2 || !br || !bs) {
+			$('#warn').removeClass('none');
+		} else {
+			$('#warn').addClass('none');
 		}
 	},
 
@@ -416,13 +438,23 @@ var songFilterer = {
 		$('#editDuetUnderstudy').val(song.duetunderstudy).change();
 		$('#editBeatboxer').val(song.beatboxer).change();
 		$('#editBeatboxUnderstudy').val(song.beatboxunderstudy).change();
-		if (!song.isappropriate) { $('#editInappropriate').attr('checked', true); } else { $('#editInappropriate').attr('checked', false); }
-		if (song.isgroup) { $('#editGroup').attr('checked', true); } else { $('#editGroup').attr('checked', false); }
-		if (song.isxmas) { $('#editXmas').attr('checked', true); } else { $('#editXmas').attr('checked', false); }
-
+		if (!song.isappropriate) {
+			$('#editInappropriate').prop('checked', true); $('#editInappropriate').prev().addClass('checked');
+		} else {
+			$('#editInappropriate').prop('checked', false); $('#editInappropriate').prev().removeClass('checked');
+		}
+		if (song.isgroup) {
+			$('#editGroup').prop('checked', true); $('#editGroup').prev().addClass('checked');
+		} else {
+			$('#editGroup').prop('checked', false); $('#editGroup').prev().removeClass('checked');
+		}
+		if (song.isxmas) {
+			$('#editXmas').prop('checked', true); $('#editXmas').prev().addClass('checked');
+		} else {
+			$('#editXmas').prop('checked', false); $('#editXmas').prev().removeClass('checked');
+		}
 		console.log(song.isgroup);
-		// console.log(document.getElementById('editSongTitle'));
-		// this.labelFloat(document.getElementById('editSongTitle'));
+
 	},
 
 	editSongInApi: function(title) {
@@ -508,6 +540,11 @@ var songFilterer = {
 
 	addSingerToApi: function(firstname, lastname, vocalpart) {
 
+		if (firstname == '' || lastname == '' || vocalpart == '') {
+			alert('Please fill out each section before submitting.');
+			return;
+		}
+
 		localApiData.singers.push( // Adding in the new singer object
 			{"firstname": firstname, "lastname": lastname, "vocalpart": vocalpart}
 		);
@@ -544,6 +581,10 @@ var songFilterer = {
 
 		for (var i = 0; i < localApiData.singers.length; i++) {
 			var singer = localApiData.singers[i];
+			if ($('#editFirstName').val() == '' || $('#editLastName').val() == '' || $('#editVocalPart').val() == '') {
+				alert('Please fill out each section before submitting.');
+				return;
+			}
 			if (fullname == singer.firstname + ' ' + singer.lastname) {
 				singer.firstname = $('#editFirstName').val();
 				singer.lastname = $('#editLastName').val();
