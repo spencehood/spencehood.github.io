@@ -115,7 +115,10 @@ input[type='checkbox'] {
 }
 #forms input[type='checkbox'] {
     margin-left: 10px;
-    /*display: none;*/
+    display: none;
+}
+#forms .checkbox {
+    margin-left: 10px;
 }
 .t1 {
     color: darkred;
